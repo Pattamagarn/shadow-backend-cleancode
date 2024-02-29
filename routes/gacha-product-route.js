@@ -5,6 +5,6 @@ const {createGachaProduct, readGachaProduct, updateGachaProduct, deleteGachaProd
 router.post('/create-gacha-product', createGachaProduct)
 router.get('/read-gacha-product', readGachaProduct)
 router.patch('/update-gacha-product', updateGachaProduct)
-router.delete('/delete-gacha-product', deleteGachaProduct)
+router.delete('/delete-gacha-product/:uuid', deleteGachaProduct)
 
 module.exports = router

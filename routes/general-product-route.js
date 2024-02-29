@@ -5,6 +5,6 @@ const {createGeneralProduct, readGeneralProduct, updateGeneralProduct, deleteGen
 router.post('/create-general-product', createGeneralProduct)
 router.get('/read-general-product', readGeneralProduct)
 router.patch('/update-general-product', updateGeneralProduct)
-router.delete('/delete-general-product', deleteGeneralProduct)
+router.delete('/delete-general-product/:uuid', deleteGeneralProduct)
 
 module.exports = router

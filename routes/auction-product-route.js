@@ -5,6 +5,6 @@ const {createAuctionProduct, readAuctionProduct, updateAuctionProduct, deleteAuc
 router.post('/create-auction-product', createAuctionProduct)
 router.get('/read-auction-product', readAuctionProduct)
 router.patch('/update-auction-product', updateAuctionProduct)
-router.delete('/delete-auction-product', deleteAuctionProduct)
+router.delete('/delete-auction-product/:uuid', deleteAuctionProduct)
 
 module.exports = router
