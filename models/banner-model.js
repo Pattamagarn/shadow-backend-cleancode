@@ -109,15 +109,15 @@ module.exports.bannerUpdate = (request, response) => {
 }
 
 module.exports.bannerDelete = (request, response) => {
-    const requestUUID = request.body.uuid
+    const requestUUID = request.params.uuid
     connection.query('SELECT information FROM banner WHERE uuid = ?', [requestUUID], (error, result) => {
         if(error){
-            response.status(200).json({status: false, payload: 'เพิ่ม Banner ล้มเหลว'})
+            response.status(200).json({status: false, payload: 'ลบ Banner ล้มเหลว'})
         }else{
             const information = result[0].information
             connection.query('DELETE FROM banner WHERE uuid = ?', [requestUUID], (error, result) => {
                 if(error){
-                    response.status(200).json({status: false, payload: 'เพิ่ม Banner ล้มเหลว'})
+                    response.status(200).json({status: false, payload: 'ลบ Banner ล้มเหลว'})
                 }else{
                     fs.unlinkSync(path.join('./public/images/banner', information))
                     response.status(200).json({status: true, payload: 'ลบ Banner สำเร็จ'})

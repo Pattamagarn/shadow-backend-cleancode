@@ -5,6 +5,6 @@ const { bannerInsert, bannerSelect, bannerUpdate, bannerDelete } = require('../c
 router.post('/banner-insert', bannerInsert)
 router.get('/banner-select', bannerSelect)
 router.patch('/banner-update', bannerUpdate)
-router.delete('/banner-delete', bannerDelete)
+router.delete('/banner-delete/:uuid', bannerDelete)
 
 module.exports = router
