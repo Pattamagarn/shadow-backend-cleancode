@@ -49,6 +49,7 @@ module.exports.bannerInsert = (request, response) => {
                             fs.unlinkSync(path.join('./public/images/banner', request.file.filename))
                             response.status(200).json({status: false, payload: 'เพิ่มแบนเนอร์ล้มเหลว'})
                         }else{
+                            
                             response.status(200).json({status: true, payload: 'เพิ่มแบนเนอร์สำเร็จ'})
                         }
                     })
