@@ -1,5 +1,4 @@
 const { isConnected, connection } = require('./connection')
-const connection = require('./connection')
 const jsonwebtoken = require('jsonwebtoken')
 const SECRET = process.env.SECRET
 
