@@ -33,7 +33,7 @@ const upload = multer({
 
 module.exports.createAuctionProduct = (request, response) => {
     if(!isConnected){
-        response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว'})
+        response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว1'})
     }else{
         upload.single('file')(request, response, (error) => {
             if(error){
@@ -42,21 +42,23 @@ module.exports.createAuctionProduct = (request, response) => {
                 try{
                     // const token = request.cookies.token
                     // jsonwebtoken.verify(token, SECRET)
+                    console.log(request.body)
                     const requestUUID = uuid.v4()
                     const requestProductId = request.body.productId
                     const requestGameName = request.body.gameName
                     const requestName = request.body.name
                     const requestDefaultPrice = request.body.defaultPrice
-                    const requestDefaultBit = request.body.defaultBit
+                    const requestDefaultBid = request.body.defaultBid
                     const requestStartTime = request.body.startTime
                     const requestEndTime = request.body.endTime
                     const requestInformation = request.file.filename
                     const requestDescription = request.body.description
                     connection.query('INSERT INTO auction_product (uuid, product_id, game_name, name, default_price, default_bid, auction_status, start_time, end_time, information, description, latest_bidder, create_at, update_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                    [requestUUID, requestProductId, requestGameName, requestName, requestDefaultPrice, requestDefaultBit, false, requestStartTime, requestEndTime, requestInformation, requestDescription, 'ไร้นาม', new Date(), new Date()], (error, result) => {
+                    [requestUUID, requestProductId, requestGameName, requestName, requestDefaultPrice, requestDefaultBid, false, requestStartTime, requestEndTime, requestInformation, requestDescription, 'ไร้นาม', new Date(), new Date()], (error, result) => {
                         if(error){
                             fs.unlinkSync(path.join('./public/images/auction-product', request.file.filename))
-                            response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว'})
+                            console.log(error)
+                            response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว2'})
                         }else{
                             response.status(200).json({status: true, payload: 'เพิ่มสินค้าประมูลสำเร็จ'})
                         }
@@ -64,9 +66,9 @@ module.exports.createAuctionProduct = (request, response) => {
                 }catch(error){
                     try {
                         fs.unlinkSync(path.join('./public/images/auction-product', request.file.filename))
-                        response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว'})
+                        response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว3'})
                     } catch (error) {
-                        response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว'})
+                        response.status(200).json({status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว4'})
                     }
                 }
             }
