@@ -101,8 +101,12 @@ module.exports.bannerUpdate = (request, response) => {
                     }
                 })
             }catch(error){
-                fs.unlinkSync(path.join('./public/images/banner', request.file.filename))
-                response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
+                try{
+                    fs.unlinkSync(path.join('./public/images/banner', request.file.filename))
+                    response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
+                }catch{
+                    response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
+                }
             }
         }
     })
