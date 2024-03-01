@@ -101,12 +101,20 @@ module.exports.updateGachaProduct = (request, response) => {
 }
 
 module.exports.deleteGachaProduct = (request, response) => {
-    const requestUUID = request.body.uuid
-    connection.query('DELETE FROM gacha_product WHERE uuid = ?', [requestUUID], (error, result) => {
-        if (error) {
-            response.status(200).json({ status: false, payload: '' })
-        } else {
-            response.status(200).json({ status: true, payload: 'ลบสำเร็จ' })
+    const requestUUID = request.params.uuid
+    connection.query('SELECT information FROM gacha_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if(error){
+            response.status(200).json({status: false, payload: 'ลบสินค้ากาชาปองล้มเหลว'})
+        }else{
+            const information = result[0].information
+            connection.query('DELETE FROM gacha_product WHERE uuid = ?', [requestUUID], (error, result) => {
+                if(error){
+                    response.status(200).json({status: false, payload: 'ลบสินค้ากาชาปองล้มเหลว'})
+                }else{
+                    fs.unlinkSync(path.join('./public/images/gacha-product', information))
+                    response.status(200).json({status: true, payload: 'ลบสินค้ากาชาปองสำเร็จ'})
+                }
+            })
         }
     })
 }

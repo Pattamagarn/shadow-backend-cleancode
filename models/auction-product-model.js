@@ -107,12 +107,20 @@ module.exports.updateAuctionProduct = (request, response) => {
 }
 
 module.exports.deleteAuctionProduct = (request, response) => {
-    const requestUUID = request.body.uuid
-    connection.query('DELETE FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {
-        if (error) {
-            response.status(200).json({ status: false, payload: '' })
-        } else {
-            response.status(200).json({ status: true, payload: 'ลบสำเร็จ' })
+    const requestUUID = request.params.uuid
+    connection.query('SELECT information FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if(error){
+            response.status(200).json({status: false, payload: 'ลบสินค้าประมูลล้มเหลว'})
+        }else{
+            const information = result[0].information
+            connection.query('DELETE FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {
+                if(error){
+                    response.status(200).json({status: false, payload: 'ลบสินค้าประมูลล้มเหลว'})
+                }else{
+                    fs.unlinkSync(path.join('./public/images/auction-product', information))
+                    response.status(200).json({status: true, payload: 'ลบสินค้าประมูลสำเร็จ'})
+                }
+            })
         }
     })
 }

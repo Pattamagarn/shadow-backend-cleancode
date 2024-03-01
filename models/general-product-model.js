@@ -101,12 +101,20 @@ module.exports.updateGeneralProduct = (request, response) => {
 }
 
 module.exports.deleteGeneralProduct = (request, response) => {
-    const requestUUID = request.body.uuid
-    connection.query('DELETE FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
-        if (error) {
-            response.status(200).json({ status: false, payload: '' })
-        } else {
-            response.status(200).json({ status: true, payload: 'ลบสำเร็จ' })
+    const requestUUID = request.params.uuid
+    connection.query('SELECT information FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if(error){
+            response.status(200).json({status: false, payload: 'ลบสินค้าล้มเหลว'})
+        }else{
+            const information = result[0].information
+            connection.query('DELETE FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
+                if(error){
+                    response.status(200).json({status: false, payload: 'ลบสินค้าล้มเหลว'})
+                }else{
+                    fs.unlinkSync(path.join('./public/images/general-product', information))
+                    response.status(200).json({status: true, payload: 'ลบสินค้าสำเร็จ'})
+                }
+            })
         }
     })
 }

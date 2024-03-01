@@ -51,9 +51,9 @@ module.exports.gameNameDelete = (request, response) => {
     const requestUUID = request.params.uuid
     connection.query('DELETE FROM game_name WHERE uuid = ?', [requestUUID], (error, result) => {
         if(error){
-            response.status(200).json({status: false, payload: error})
+            response.status(200).json({status: false, payload: 'ลบชื่อเกมล้มเหลว'})
         }else{
-            response.status(200).json({status: true, payload: result})
+            response.status(200).json({status: true, payload: 'ลบชื่อเกมสำเร็จ'})
         }
     })
 }
