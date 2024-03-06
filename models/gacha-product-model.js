@@ -82,6 +82,16 @@ module.exports.readGachaProduct = (request, response) => {
     })
 }
 
+module.exports.readGacha3Product = (request, response) => {
+    connection.query('SELECT uuid, game_name , name , chance, guarantee_status, information , description FROM gacha_product LIMIT 3', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.updateGachaProduct = (request, response) => {
     const requestUUID = request.body.uuid
     const requestName = request.body.name

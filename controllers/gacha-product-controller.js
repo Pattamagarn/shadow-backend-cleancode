@@ -8,6 +8,10 @@ exports.readGachaProduct = (request, response) => {
     gachaProductModel.readGachaProduct(request, response)
 }
 
+exports.readGacha3Product = (request, response) => {
+    gachaProductModel.readGacha3Product(request, response)
+}
+
 exports.updateGachaProduct = (request, response) => {
     gachaProductModel.updateGachaProduct(request, response)
 }

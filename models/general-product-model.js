@@ -82,6 +82,26 @@ module.exports.readGeneralProduct = (request, response) => {
     })
 }
 
+module.exports.readGeneral3Product = (request, response) => {
+    connection.query('SELECT uuid, name , game_name , normal_price , special_price , special_price_status , information , description FROM general_product LIMIT 3', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotion3Product = (request, response) => {
+    connection.query('SELECT uuid, name , game_name , normal_price , special_price , special_price_status , information , description FROM general_product WHERE special_price_status = 1 LIMIT 3', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.updateGeneralProduct = (request, response) => {
     const requestUUID = request.body.uuid
     const requestName = request.body.name

@@ -86,6 +86,16 @@ module.exports.readAuctionProduct = (request, response) => {
     })
 }
 
+module.exports.readAuction3Product = (request, response) => {
+    connection.query('SELECT uuid, game_name , name , default_price , auction_status , information , description FROM auction_product LIMIT 3', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.updateAuctionProduct = (request, response) => {
     const requestUUID = request.body.uuid
     const requestName = request.body.name
