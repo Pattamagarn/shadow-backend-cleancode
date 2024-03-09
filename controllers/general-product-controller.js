@@ -8,6 +8,10 @@ exports.readGeneralProduct = (request, response) => {
     generalProductModel.readGeneralProduct(request, response)
 }
 
+exports.readGeneralProductNewDateToOldDate = (request, response) => {
+    generalProductModel.readGeneralProductNewDateToOldDate(request, response)
+}
+
 exports.readGeneral3Product = (request, response) => {
     generalProductModel.readGeneral3Product(request, response)
 }

@@ -73,10 +73,21 @@ module.exports.createGeneralProduct = (request, response) => {
 }
 
 module.exports.readGeneralProduct = (request, response) => {
-    connection.query('SELECT uuid, name , game_name , normal_price , special_price , special_price_status , information , description FROM general_product', [], (error, result) => {
+    connection.query('SELECT * FROM general_product', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGeneralProductNewDateToOldDate = (request, response) => {
+    connection.query('SELECT * FROM general_product ORDER BY update_at DESC ;', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            console.log(result)
             response.status(200).json({ status: true, payload: result })
         }
     })
