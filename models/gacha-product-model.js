@@ -40,8 +40,6 @@ module.exports.createGachaProduct = (request, response) => {
                 response.status(200).json({status: false, payload: 'ใช้ได้แค่ไฟล์ .png เท่านั้น'})
             }else{
                 try{
-                    // const token = request.cookies.token
-                    // jsonwebtoken.verify(token, SECRET)
                     const requestUUID = uuid.v4()
                     const requestProductId = request.body.productId
                     const requestGameName = request.body.gameName
@@ -73,7 +71,47 @@ module.exports.createGachaProduct = (request, response) => {
 }
 
 module.exports.readGachaProduct = (request, response) => {
-    connection.query('SELECT uuid, game_name , name , chance, guarantee_status, information , description FROM gacha_product', [], (error, result) => {
+    connection.query('SELECT * FROM gacha_product', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGachaProductOldToNew = (request, response) => {
+    connection.query('SELECT * FROM gacha_product ORDER BY update_at', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGachaProductNewToOld = (request, response) => {
+    connection.query('SELECT * FROM gacha_product ORDER BY update_at DESC', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGachaProductCheapToExpensive = (request, response) => {
+    connection.query('SELECT * FROM gacha_product ORDER BY price', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGachaProductExpensiveToCheap = (request, response) => {
+    connection.query('SELECT * FROM gacha_product ORDER BY price DESC', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -83,7 +121,7 @@ module.exports.readGachaProduct = (request, response) => {
 }
 
 module.exports.readGacha3Product = (request, response) => {
-    connection.query('SELECT uuid, game_name , name , chance, guarantee_status, information , description FROM gacha_product LIMIT 3', [], (error, result) => {
+    connection.query('SELECT * FROM gacha_product LIMIT 3', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -93,7 +131,7 @@ module.exports.readGacha3Product = (request, response) => {
 }
 
 module.exports.updateGachaProduct = (request, response) => {
-    const requestUUID = request.body.uuid
+    const requestUUID = request.params.uuid
     const requestName = request.body.name
     const requestGameName = request.body.game_name
     const requestChance = request.body.chance

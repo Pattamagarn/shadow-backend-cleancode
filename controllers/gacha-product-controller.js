@@ -8,6 +8,22 @@ exports.readGachaProduct = (request, response) => {
     gachaProductModel.readGachaProduct(request, response)
 }
 
+exports.readGachaProductOldToNew = (request, response) => {
+    gachaProductModel.readGachaProductOldToNew(request, response)
+}
+
+exports.readGachaProductNewToOld = (request, response) => {
+    gachaProductModel.readGachaProductNewToOld(request, response)
+}
+
+exports.readGachaProductCheapToExpensive = (request, response) => {
+    gachaProductModel.readGachaProductCheapToExpensive(request, response)
+}
+
+exports.readGachaProductExpensiveToCheap = (request, response) => {
+    gachaProductModel.readGachaProductExpensiveToCheap(request, response)
+}
+
 exports.readGacha3Product = (request, response) => {
     gachaProductModel.readGacha3Product(request, response)
 }

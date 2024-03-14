@@ -8,6 +8,22 @@ exports.readAuctionProduct = (request, response) => {
     auctionProductModel.readAuctionProduct(request, response)
 }
 
+exports.readAuctionProductOldToNew = (request, response) => {
+    auctionProductModel.readAuctionProductOldToNew(request, response)
+}
+
+exports.readAuctionProductNewToOld = (request, response) => {
+    auctionProductModel.readAuctionProductNewToOld(request, response)
+}
+
+exports.readAuctionProductCheapToExpensive = (request, response) => {
+    auctionProductModel.readAuctionProductCheapToExpensive(request, response)
+}
+
+exports.readAuctionProductExpensiveToCheap = (request, response) => {
+    auctionProductModel.readAuctionProductExpensiveToCheap(request, response)
+}
+
 exports.readAuction3Product = (request, response) => {
     auctionProductModel.readAuction3Product(request, response)
 }

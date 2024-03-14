@@ -5,6 +5,7 @@ const multer = require('multer')
 const uuid = require('uuid')
 const path = require('path')
 const fs = require('fs')
+
 const storageGeneralProduct = multer.diskStorage({
     destination: (request, file, callback) => {
         callback(null, './public/images/general-product')
@@ -23,25 +24,23 @@ const storageGeneralProduct = multer.diskStorage({
 const upload = multer({
     storage: storageGeneralProduct,
     fileFilter: (request, file, callback) => {
-        if(file.mimetype === 'image/png'){
+        if (file.mimetype === 'image/png') {
             callback(null, true)
-        }else{
+        } else {
             callback(new Error('ใช้ได้แค่ไฟล์ .png เท่านั้น'), false)
         }
     }
 })
 
 module.exports.createGeneralProduct = (request, response) => {
-    if(!isConnected){
-        response.status(200).json({status: false, payload: 'เพิ่มสินค้าล้มเหลว'})
-    }else{
+    if (!isConnected) {
+        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าล้มเหลว' })
+    } else {
         upload.single('file')(request, response, (error) => {
-            if(error){
-                response.status(200).json({status: false, payload: 'ใช้ได้แค่ไฟล์ .png เท่านั้น'})
-            }else{
-                try{
-                    // const token = request.cookies.token
-                    // jsonwebtoken.verify(token, SECRET)
+            if (error) {
+                response.status(200).json({ status: false, payload: 'ใช้ได้แค่ไฟล์ .png เท่านั้น' })
+            } else {
+                try {
                     const requestUUID = uuid.v4()
                     const requestProductId = request.body.productId
                     const requestGameName = request.body.gameName
@@ -51,20 +50,20 @@ module.exports.createGeneralProduct = (request, response) => {
                     const requestInformation = request.file.filename
                     const requestDescription = request.body.description
                     connection.query('INSERT INTO general_product (uuid, product_id, game_name, name, normal_price, special_price, special_price_status, information, description, create_at, update_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                    [requestUUID, requestProductId, requestGameName, requestName, requestNormalPrice, requestSpecialPrice, false, requestInformation, requestDescription, new Date(), new Date()], (error, result) => {
-                        if(error){
-                            fs.unlinkSync(path.join('./public/images/general-product', request.file.filename))
-                            response.status(200).json({status: false, payload: 'เพิ่มสินค้าล้มเหลว'})
-                        }else{
-                            response.status(200).json({status: true, payload: 'เพิ่มสินค้าสำเร็จ'})
-                        }
-                    })
-                }catch(error){
+                        [requestUUID, requestProductId, requestGameName, requestName, requestNormalPrice, requestSpecialPrice, false, requestInformation, requestDescription, new Date(), new Date()], (error, result) => {
+                            if (error) {
+                                fs.unlinkSync(path.join('./public/images/general-product', request.file.filename))
+                                response.status(200).json({ status: false, payload: 'เพิ่มสินค้าล้มเหลว' })
+                            } else {
+                                response.status(200).json({ status: true, payload: 'เพิ่มสินค้าสำเร็จ' })
+                            }
+                        })
+                } catch (error) {
                     try {
                         fs.unlinkSync(path.join('./public/images/general-product', request.file.filename))
-                        response.status(200).json({status: false, payload: 'เพิ่มสินค้าล้มเหลว'})
+                        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าล้มเหลว' })
                     } catch (error) {
-                        response.status(200).json({status: false, payload: 'เพิ่มสินค้าล้มเหลว'})
+                        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าล้มเหลว' })
                     }
                 }
             }
@@ -82,29 +81,48 @@ module.exports.readGeneralProduct = (request, response) => {
     })
 }
 
-module.exports.readGeneralProductNewDateToOldDate = (request, response) => {
-    connection.query('SELECT * FROM general_product ORDER BY update_at DESC ;', [], (error, result) => {
+module.exports.readGeneralProductOldToNew = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY update_at', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
-            console.log(result)
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGeneralProductNewToOld = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY update_at DESC', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGeneralProductCheapToExpensive = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY normal_price', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGeneralProductExpensiveToCheap = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY normal_price DESC', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
             response.status(200).json({ status: true, payload: result })
         }
     })
 }
 
 module.exports.readGeneral3Product = (request, response) => {
-    connection.query('SELECT uuid, name , game_name , normal_price , special_price , special_price_status , information , description FROM general_product LIMIT 3', [], (error, result) => {
-        if (error) {
-            response.status(200).json({ status: false, payload: [] })
-        } else {
-            response.status(200).json({ status: true, payload: result })
-        }
-    })
-}
-
-module.exports.readPromotion3Product = (request, response) => {
-    connection.query('SELECT uuid, name , game_name , normal_price , special_price , special_price_status , information , description FROM general_product WHERE special_price_status = 1 LIMIT 3', [], (error, result) => {
+    connection.query('SELECT * FROM general_product LIMIT 3', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -114,38 +132,116 @@ module.exports.readPromotion3Product = (request, response) => {
 }
 
 module.exports.updateGeneralProduct = (request, response) => {
-    const requestUUID = request.body.uuid
+    const requestUUID = request.params.uuid
     const requestName = request.body.name
     const requestGameName = request.body.game_name
     const requestNormalPrice = request.body.normal_price
     const requestSpecialPrice = request.body.special_price
     const requestInformation = request.body.information
     const requestDescription = request.body.description
-    connection.query('UPDATE general_product SET name = ? , game_name = ? , normal_price = ? , special_price = ? , information = ? , description = ? , update_at = ? WHERE uuid = ? LIMIT 1', 
+    connection.query('UPDATE general_product SET name = ? , game_name = ? , normal_price = ? , special_price = ? , information = ? , description = ? , update_at = ? WHERE uuid = ? LIMIT 1',
         [requestName, requestGameName, requestNormalPrice, requestSpecialPrice, requestInformation, requestDescription, new Date(), requestUUID], (error, result) => {
-        if (error) {
-            response.status(200).json({ status: false, payload: '' })
-        } else {
-            response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
-        }
-    })
+            if (error) {
+                response.status(200).json({ status: false, payload: '' })
+            } else {
+                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+            }
+        })
 }
+
+module.exports.updateStatusPrice = (request, response) => {
+    const requestUUID = request.params.uuid;
+    const requestStatus = request.body.special_price_status;
+    if (requestStatus === 0) {
+        connection.query('UPDATE general_product SET special_price_status = 1, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' });
+                }
+            });
+    } else if (requestStatus === 1) {
+        connection.query('UPDATE general_product SET special_price_status = 0, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' });
+                }
+            });
+    }
+}
+
 
 module.exports.deleteGeneralProduct = (request, response) => {
     const requestUUID = request.params.uuid
     connection.query('SELECT information FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
-        if(error){
-            response.status(200).json({status: false, payload: 'ลบสินค้าล้มเหลว'})
-        }else{
+        if (error) {
+            response.status(200).json({ status: false, payload: 'ลบสินค้าล้มเหลว' })
+        } else {
             const information = result[0].information
             connection.query('DELETE FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
-                if(error){
-                    response.status(200).json({status: false, payload: 'ลบสินค้าล้มเหลว'})
-                }else{
+                if (error) {
+                    response.status(200).json({ status: false, payload: 'ลบสินค้าล้มเหลว' })
+                } else {
                     fs.unlinkSync(path.join('./public/images/general-product', information))
-                    response.status(200).json({status: true, payload: 'ลบสินค้าสำเร็จ'})
+                    response.status(200).json({ status: true, payload: 'ลบสินค้าสำเร็จ' })
                 }
             })
+        }
+    })
+}
+
+// -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
+
+module.exports.readPromotionProductOldToNew = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 ORDER BY update_at', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotionProductNewToOld = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 ORDER BY update_at DESC', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotionProductCheapToExpensive = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 ORDER BY normal_price', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotionProductExpensiveToCheap = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 ORDER BY normal_price DESC', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotion3Product = (request, response) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 LIMIT 3', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
         }
     })
 }
