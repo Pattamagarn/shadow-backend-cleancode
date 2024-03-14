@@ -16,6 +16,14 @@ exports.updateAuctionProduct = (request, response) => {
     auctionProductModel.updateAuctionProduct(request, response)
 }
 
+exports.updateBid = (request, response) => {
+    auctionProductModel.updateBid(request, response)
+}
+
+exports.updateAysel = (request, response) => {
+    auctionProductModel.updateAysel(request, response)
+}
+
 exports.deleteAuctionProduct = (request, response) => {
     auctionProductModel.deleteAuctionProduct(request, response)
 }

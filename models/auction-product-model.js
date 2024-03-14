@@ -77,7 +77,7 @@ module.exports.createAuctionProduct = (request, response) => {
 }
 
 module.exports.readAuctionProduct = (request, response) => {
-    connection.query('SELECT uuid, game_name , name , default_price , auction_status , information , description FROM auction_product', [], (error, result) => {
+    connection.query('SELECT * FROM auction_product', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -114,6 +114,35 @@ module.exports.updateAuctionProduct = (request, response) => {
             response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
         }
     })
+}
+
+module.exports.updateBid = (request, response) => {
+    const requestUUID = request.body.uuid
+    const requestDefaultPrice = request.body.default_price
+    const requestLatestBidder = request.body.latest_bidder
+    console.log(request.body)
+    connection.query('UPDATE auction_product SET default_price = ?, latest_bidder = ?, update_at = ? WHERE uuid = ?',
+        [requestDefaultPrice, requestLatestBidder, new Date(), requestUUID], (error, result) => {
+            if (error) {
+                response.status(200).json({ status: false, payload: '' })
+            } else {
+                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+            }
+        })
+}
+
+module.exports.updateAysel = (request, response) => {
+    const requesEmail = request.body.email
+    const requestAyselAmount = request.body.aysel_amount
+    console.log(request.body)
+    connection.query('UPDATE finance SET aysel_amount = ?, update_at = ? WHERE email = ?',
+        [requestAyselAmount, new Date(), requesEmail], (error, result) => {
+            if (error) {
+                response.status(200).json({ status: false, payload: '' })
+            } else {
+                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+            }
+        })
 }
 
 module.exports.deleteAuctionProduct = (request, response) => {
