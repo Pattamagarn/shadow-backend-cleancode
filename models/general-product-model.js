@@ -81,17 +81,6 @@ module.exports.readGeneralProduct = (request, response) => {
     })
 }
 
-module.exports.readGeneralProductWithUUID = (request, response) => {
-    const requestUUID = request.params.uuid
-    connection.query('SELECT * FROM general_product WHERE uuid = ? LIMIT 1 ', [requestUUID], (error, result) => {
-        if (error) {
-            response.status(200).json({ status: false, payload: [] })
-        } else {
-            response.status(200).json({ status: true, payload: result })
-        }
-    })
-}
-
 module.exports.readGeneralProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM general_product ORDER BY update_at', [], (error, result) => {
         if (error) {
@@ -206,6 +195,27 @@ module.exports.deleteGeneralProduct = (request, response) => {
 }
 
 // -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
+
+module.exports.readPromotionProduct = (request, response) => {
+    connection.query('SELECT * FROM general_product special_price_status = 1', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotionProductWithUUID = (request, response) => {
+    const requestUUID = request.params.uuid 
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 and uuid = ?', [requestUUID], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
 
 module.exports.readPromotionProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM general_product WHERE special_price_status = 1 ORDER BY update_at', [], (error, result) => {

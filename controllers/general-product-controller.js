@@ -46,6 +46,14 @@ exports.deleteGeneralProduct = (request, response) => {
 
 // -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
 
+exports.readPromotionProduct = (request, response) => {
+    generalProductModel.readPromotionProduct(request, response)
+}
+
+exports.readPromotionProductWithUUID = (request, response) => {
+    generalProductModel.readPromotionProductWithUUID(request, response)
+}
+
 exports.readPromotionProductOldToNew = (request, response) => {
     generalProductModel.readPromotionProductOldToNew(request, response)
 }

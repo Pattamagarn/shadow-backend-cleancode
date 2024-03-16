@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { createGeneralProduct, readGeneralProduct,readGeneralProductWithUUID, readGeneralProductOldToNew, readGeneralProductNewToOld,
         readGeneralProductCheapToExpensive, readGeneralProductExpensiveToCheap, readGeneral3Product, updateGeneralProduct, updateStatusPrice, deleteGeneralProduct,
-        readPromotionProductOldToNew, readPromotionProductNewToOld, readPromotionProductCheapToExpensive,
+        readPromotionProduct, readPromotionProductWithUUID, readPromotionProductOldToNew, readPromotionProductNewToOld, readPromotionProductCheapToExpensive,
         readPromotionProductExpensiveToCheap, readPromotion3Product } = require('../controllers/general-product-controller')
 
 router.post('/create-general-product', createGeneralProduct)
@@ -19,6 +19,8 @@ router.delete('/delete-general-product/:uuid', deleteGeneralProduct)
 
 // -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
 
+router.get('/read-promotion-product', readPromotionProduct)
+router.get('/read-promotion-product-uuid/:uuid', readPromotionProductWithUUID)
 router.get('/read-promotion-product-old-to-new', readPromotionProductOldToNew)
 router.get('/read-promotion-product-new-to-old', readPromotionProductNewToOld)
 router.get('/read-promotion-product-cheap-to-expensive', readPromotionProductCheapToExpensive)

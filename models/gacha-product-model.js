@@ -80,6 +80,17 @@ module.exports.readGachaProduct = (request, response) => {
     })
 }
 
+module.exports.readGachaProductWithUUID = (request, response) => {
+    const requestUUID = request.params.uuid 
+    connection.query('SELECT * FROM gacha_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readGachaProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM gacha_product ORDER BY update_at', [], (error, result) => {
         if (error) {
