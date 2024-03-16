@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const { createGeneralProduct, readGeneralProduct, readGeneralProductOldToNew, readGeneralProductNewToOld,
+const { createGeneralProduct, readGeneralProduct,readGeneralProductWithUUID, readGeneralProductOldToNew, readGeneralProductNewToOld,
         readGeneralProductCheapToExpensive, readGeneralProductExpensiveToCheap, readGeneral3Product, updateGeneralProduct, updateStatusPrice, deleteGeneralProduct,
         readPromotionProductOldToNew, readPromotionProductNewToOld, readPromotionProductCheapToExpensive,
         readPromotionProductExpensiveToCheap, readPromotion3Product } = require('../controllers/general-product-controller')
 
 router.post('/create-general-product', createGeneralProduct)
 router.get('/read-general-product', readGeneralProduct)
+router.get('/read-general-product-uuid/:uuid', readGeneralProductWithUUID)
 router.get('/read-general-product-old-to-new', readGeneralProductOldToNew)
 router.get('/read-general-product-new-to-old', readGeneralProductNewToOld)
 router.get('/read-general-product-cheap-to-expensive', readGeneralProductCheapToExpensive)
