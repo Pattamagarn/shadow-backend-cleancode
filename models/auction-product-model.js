@@ -83,6 +83,17 @@ module.exports.readAuctionProduct = (request, response) => {
     })
 }
 
+module.exports.readAuctionProductWithUUID = (request, response) => {
+    const requestUUID = request.params.uuid 
+    connection.query('SELECT * FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readAuctionProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM auction_product ORDER BY update_at', [], (error, result) => {
         if (error) {

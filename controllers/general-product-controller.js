@@ -8,6 +8,10 @@ exports.readGeneralProduct = (request, response) => {
     generalProductModel.readGeneralProduct(request, response)
 }
 
+exports.readGeneralProductWithUUID = (request, response) => {
+    generalProductModel.readGeneralProductWithUUID(request, response)
+}
+
 exports.readGeneralProductOldToNew = (request, response) => {
     generalProductModel.readGeneralProductOldToNew(request, response)
 }
@@ -41,6 +45,14 @@ exports.deleteGeneralProduct = (request, response) => {
 }
 
 // -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
+
+exports.readPromotionProduct = (request, response) => {
+    generalProductModel.readPromotionProduct(request, response)
+}
+
+exports.readPromotionProductWithUUID = (request, response) => {
+    generalProductModel.readPromotionProductWithUUID(request, response)
+}
 
 exports.readPromotionProductOldToNew = (request, response) => {
     generalProductModel.readPromotionProductOldToNew(request, response)

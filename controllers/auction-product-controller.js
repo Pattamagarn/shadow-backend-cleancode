@@ -8,6 +8,10 @@ exports.readAuctionProduct = (request, response) => {
     auctionProductModel.readAuctionProduct(request, response)
 }
 
+exports.readAuctionProductWithUUID = (request, response) => {
+    auctionProductModel.readAuctionProductWithUUID(request, response)
+}
+
 exports.readAuctionProductOldToNew = (request, response) => {
     auctionProductModel.readAuctionProductOldToNew(request, response)
 }

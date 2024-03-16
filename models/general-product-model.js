@@ -81,8 +81,19 @@ module.exports.readGeneralProduct = (request, response) => {
     })
 }
 
+module.exports.readGeneralProductWithUUID = (request, response) => {
+    const requestUUID = request.params.uuid 
+    connection.query('SELECT * FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readGeneralProductOldToNew = (request, response) => {
-    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY update_at', [], (error, result) => {
+    connection.query('SELECT * FROM general_product ORDER BY update_at', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -92,7 +103,7 @@ module.exports.readGeneralProductOldToNew = (request, response) => {
 }
 
 module.exports.readGeneralProductNewToOld = (request, response) => {
-    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY update_at DESC', [], (error, result) => {
+    connection.query('SELECT * FROM general_product ORDER BY update_at DESC', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -102,7 +113,7 @@ module.exports.readGeneralProductNewToOld = (request, response) => {
 }
 
 module.exports.readGeneralProductCheapToExpensive = (request, response) => {
-    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY normal_price', [], (error, result) => {
+    connection.query('SELECT * FROM general_product ORDER BY normal_price', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -112,7 +123,7 @@ module.exports.readGeneralProductCheapToExpensive = (request, response) => {
 }
 
 module.exports.readGeneralProductExpensiveToCheap = (request, response) => {
-    connection.query('SELECT * FROM general_product WHERE special_price_status = 0 ORDER BY normal_price DESC', [], (error, result) => {
+    connection.query('SELECT * FROM general_product ORDER BY normal_price DESC', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -195,6 +206,27 @@ module.exports.deleteGeneralProduct = (request, response) => {
 }
 
 // -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
+
+module.exports.readPromotionProduct = (request, response) => {
+    connection.query('SELECT * FROM general_product special_price_status = 1', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readPromotionProductWithUUID = (request, response) => {
+    const requestUUID = request.params.uuid 
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1 and uuid = ?', [requestUUID], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
 
 module.exports.readPromotionProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM general_product WHERE special_price_status = 1 ORDER BY update_at', [], (error, result) => {
