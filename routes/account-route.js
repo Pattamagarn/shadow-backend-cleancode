@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { validationAccount, signUpAccount, signInAccount, signOutAccount, authenticationAccount, selectAccount } = require('../controllers/account-controller')
+const { validationAccount, signUpAccount, signInAccount, signOutAccount, authenticationAccount, selectAccount, updateStatusAccount } = require('../controllers/account-controller')
 
 router.post('/sign-up-validation', validationAccount)
 router.post('/sign-up-account', signUpAccount)
@@ -8,5 +8,6 @@ router.post('/sign-in-account', signInAccount)
 router.get('/sign-out-account', signOutAccount)
 router.get('/authentication-account', authenticationAccount)
 router.get('/select-account', selectAccount)
+router.patch('/update-status-account', updateStatusAccount)
 
 module.exports = router

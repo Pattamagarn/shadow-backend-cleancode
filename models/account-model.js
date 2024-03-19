@@ -149,3 +149,28 @@ module.exports.selectAccount = (request, response) => {
         })
     }
 }
+
+module.exports.updateStatusAccount = (request, response) => {
+    const requestEmail = request.params.email;
+    const requestStatus = request.body.suspended_status;
+    if (requestStatus === 0) {
+        connection.query('UPDATE account SET suspended_status = 1, update_at = ? WHERE email = ? LIMIT 1',
+            [new Date(), requestEmail], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'ระงับผู้ใช้สำเร็จ' });
+                }
+            });
+    } else if (requestStatus === 1) {
+        connection.query('UPDATE account SET suspended_status = 0, update_at = ? WHERE email = ? LIMIT 1',
+            [new Date(), requestEmail], (error, result) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'ปลดระงับผู้ใช้สำเร็จ' });
+                }
+            });
+    }
+}
