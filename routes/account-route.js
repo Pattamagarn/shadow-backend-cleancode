@@ -8,6 +8,6 @@ router.post('/sign-in-account', signInAccount)
 router.get('/sign-out-account', signOutAccount)
 router.get('/authentication-account', authenticationAccount)
 router.get('/select-account', selectAccount)
-router.patch('/update-status-account', updateStatusAccount)
+router.patch('/update-status-account/:email', updateStatusAccount)
 
 module.exports = router

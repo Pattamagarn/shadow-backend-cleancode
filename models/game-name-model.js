@@ -36,7 +36,7 @@ module.exports.gameNameSelect = (request, response) => {
 }
 
 module.exports.gameNameUpdate = (request, response) => {
-    const requestUUID = request.body.uuid
+    const requestUUID = request.params.uuid
     const requestGameName = request.body.game_name
     connection.query('UPDATE game_name SET game_name = ?, update_at = ? WHERE uuid = ?', [requestGameName, new Date(), requestUUID], (error, result) => {
         if(error){
