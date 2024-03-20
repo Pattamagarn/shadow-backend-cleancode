@@ -23,3 +23,7 @@ exports.authenticationAccount = (request, response) => {
 exports.selectAccount = (request, response) => {
     accountModel.selectAccount(request, response)
 }
+
+exports.updateStatusAccount = (request, response) => {
+    accountModel.updateStatusAccount(request, response)
+}
