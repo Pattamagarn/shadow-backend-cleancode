@@ -4,7 +4,7 @@ const { gameNameInsert, gameNameSelect, gameNameUpdate, gameNameDelete } = requi
 
 router.post('/game-name-insert', gameNameInsert)
 router.get('/game-name-select', gameNameSelect)
-router.patch('/game-name-update', gameNameUpdate)
+router.patch('/game-name-update/:uuid', gameNameUpdate)
 router.delete('/game-name-delete/:uuid', gameNameDelete)
 
 module.exports = router

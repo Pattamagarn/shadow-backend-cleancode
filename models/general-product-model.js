@@ -81,6 +81,17 @@ module.exports.readGeneralProduct = (request, response) => {
     })
 }
 
+module.exports.readGeneralProductWithUUID = (request, response) => {
+    const requestUUID = request.params.uuid 
+    connection.query('SELECT * FROM general_product WHERE uuid = ?', [requestUUID], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readGeneralProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM general_product ORDER BY update_at', [], (error, result) => {
         if (error) {
@@ -158,7 +169,7 @@ module.exports.updateStatusPrice = (request, response) => {
                 if (error) {
                     response.status(200).json({ status: false, payload: '' });
                 } else {
-                    response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' });
+                    response.status(200).json({ status: true, payload: 'เปิดสถานะการลดราคาสำเร็จ' });
                 }
             });
     } else if (requestStatus === 1) {
@@ -168,7 +179,7 @@ module.exports.updateStatusPrice = (request, response) => {
                     console.log(error);
                     response.status(200).json({ status: false, payload: '' });
                 } else {
-                    response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' });
+                    response.status(200).json({ status: true, payload: 'ปิดสถานะการลดราคาสำเร็จ' });
                 }
             });
     }
@@ -197,7 +208,7 @@ module.exports.deleteGeneralProduct = (request, response) => {
 // -------------------------------------------------------------------- [ Promotion ] -------------------------------------------------------------------- //
 
 module.exports.readPromotionProduct = (request, response) => {
-    connection.query('SELECT * FROM general_product special_price_status = 1', [], (error, result) => {
+    connection.query('SELECT * FROM general_product WHERE special_price_status = 1', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {

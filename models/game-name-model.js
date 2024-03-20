@@ -36,13 +36,13 @@ module.exports.gameNameSelect = (request, response) => {
 }
 
 module.exports.gameNameUpdate = (request, response) => {
-    const requestUUID = request.body.uuid
+    const requestUUID = request.params.uuid
     const requestGameName = request.body.game_name
     connection.query('UPDATE game_name SET game_name = ?, update_at = ? WHERE uuid = ?', [requestGameName, new Date(), requestUUID], (error, result) => {
         if(error){
-            response.status(200).json({status: false, payload: error})
+            response.status(200).json({status: false, payload: "แก้ไขชื่อเกมไม่สำเร็จ"})
         }else{
-            response.status(200).json({status: true, payload: result})
+            response.status(200).json({status: true, payload: "แก้ไขชื่อเกมสำเร็จ"})
         }
     })
 }
