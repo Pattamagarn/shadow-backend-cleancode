@@ -19,6 +19,7 @@ const gachaProductRoute = require('./routes/gacha-product-route')
 const paymentMethod = require('./routes/payment-method-route')
 const topUp = require('./routes/topup-routes')
 const historyPaymentRoute = require('./routes/history-payment-route')
+const finance = require('./routes/finance-route')
 
 app.use(cookieParser())
 app.use(express.json())
@@ -40,6 +41,7 @@ app.use('/api', gachaProductRoute)
 app.use('/api', paymentMethod)
 app.use('/api', topUp)
 app.use('/api', historyPaymentRoute)
+app.use('/api', finance)
 
 const port = process.env.PORT || 8000
 const server = app.listen(port, () => {

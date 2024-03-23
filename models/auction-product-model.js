@@ -178,19 +178,6 @@ module.exports.updateBid = (request, response) => {
         })
 }
 
-module.exports.updateAysel = (request, response) => {
-    const requesEmail = request.body.email
-    const requestAyselAmount = request.body.aysel_amount
-    connection.query('UPDATE finance SET aysel_amount = ?, update_at = ? WHERE email = ?',
-        [requestAyselAmount, new Date(), requesEmail], (error, result) => {
-            if (error) {
-                response.status(200).json({ status: false, payload: '' })
-            } else {
-                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
-            }
-        })
-}
-
 module.exports.deleteAuctionProduct = (request, response) => {
     const requestUUID = request.params.uuid
     connection.query('SELECT information FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {
