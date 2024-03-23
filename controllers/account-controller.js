@@ -27,3 +27,7 @@ exports.selectAccount = (request, response) => {
 exports.updateStatusAccount = (request, response) => {
     accountModel.updateStatusAccount(request, response)
 }
+
+exports.updateUsername = (request, response) => {
+    accountModel.updateUsername(request, response)
+}

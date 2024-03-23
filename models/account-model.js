@@ -174,3 +174,16 @@ module.exports.updateStatusAccount = (request, response) => {
             });
     }
 }
+
+module.exports.updateUsername = (request, response) => {
+    const requestEmail = request.params.email
+    const requestUsername = request.body.username
+    connection.query('UPDATE account SET username = ?, update_at = ? WHERE email = ?',
+        [requestUsername, new Date(), requestEmail], (error, result) => {
+            if (error) {
+                response.status(200).json({ status: false, payload: '' })
+            } else {
+                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+            }
+        })
+}
