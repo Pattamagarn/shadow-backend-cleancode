@@ -31,3 +31,7 @@ exports.updateStatusAccount = (request, response) => {
 exports.updateUsername = (request, response) => {
     accountModel.updateUsername(request, response)
 }
+
+exports.updateAvatar = (request, response) => {
+    accountModel.updateAvatar(request, response)
+}

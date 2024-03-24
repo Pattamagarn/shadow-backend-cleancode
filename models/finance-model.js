@@ -9,8 +9,6 @@ const fs = require('fs')
 module.exports.updateAysel = (request, response) => {
     const requesEmail = request.body.email
     const requestAyselAmount = request.body.aysel_amount
-    console.log(requesEmail)
-    console.log(requestAyselAmount)
     connection.query('UPDATE finance SET aysel_amount = ?, update_at = ? WHERE email = ?',
         [requestAyselAmount, new Date(), requesEmail], (error, result) => {
             if (error) {

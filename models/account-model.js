@@ -1,6 +1,35 @@
 const { isConnected, connection } = require('./connection')
 const jsonwebtoken = require('jsonwebtoken')
 const SECRET = process.env.SECRET
+const multer = require('multer')
+const uuid = require('uuid')
+const path = require('path')
+const fs = require('fs')
+const storageAvatar = multer.diskStorage({
+    destination: (request, file, callback) => {
+        callback(null, './public/images/avatar')
+    },
+    filename: (request, file, callback) => {
+        const fileExtension = file.originalname.split('.')[1]
+        const fileName = `${uuid.v4()}${Date.now()}${Math.round(Math.random() * 1E9)}.${fileExtension}`
+        callback(null, fileName)
+        request.on('aborted', () => {
+            const fullPath = path.join('./public/images/avatar', fileName)
+            fs.unlinkSync(fullPath)
+        })
+    }
+})
+
+const upload = multer({
+    storage: storageAvatar,
+    fileFilter: (request, file, callback) => {
+        if(file.mimetype === 'image/png'){
+            callback(null, true)
+        }else{
+            callback(new Error('ใช้ได้แค่ไฟล์ .png เท่านั้น'), false)
+        }
+    }
+})
 
 module.exports.validationAccount = (request, response) => {
     const atLeastOneUppercase = /[A-Z]/g
@@ -181,9 +210,47 @@ module.exports.updateUsername = (request, response) => {
     connection.query('UPDATE account SET username = ?, update_at = ? WHERE email = ?',
         [requestUsername, new Date(), requestEmail], (error, result) => {
             if (error) {
-                response.status(200).json({ status: false, payload: '' })
+                response.status(200).json({ status: false, payload: error })
             } else {
-                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+                response.status(200).json({ status: true, payload: 'แก้ไขชื่อสำเร็จ' })
             }
         })
+}
+
+module.exports.updateAvatar = (request, response) => {
+    upload.single('file')(request, response, (error) => {
+        if(error){
+            response.status(200).json({status: false, payload: 'ใช้ได้แค่ไฟล์ .png เท่านั้น'})
+        }else{
+            try{
+                const token = request.cookies.token
+                jsonwebtoken.verify(token, SECRET)
+                const requestEmail = request.body.email
+                const requestAvatar = request.file.filename
+                connection.query('SELECT avatar FROM account WHERE email = ?', [requestEmail], (error, result) => {
+                    if(error){
+                        response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว1'})
+                    }else{
+                        const avatar = result[0].avatar
+                        fs.unlinkSync(path.join('./public/images/avatar', avatar))
+                        connection.query('UPDATE account SET avatar = ?, update_at = ? WHERE email = ?', [requestAvatar, new Date(), requestEmail], (error, result) => {
+                            if(error){
+                                response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว2'})
+                            }else{
+                                response.status(200).json({status: true, payload: 'แก้ไขสำเร็จ'})
+                            }
+                        })
+                    }
+                })
+            }catch(error){
+                console.log(error)
+                try{
+                    fs.unlinkSync(path.join('./public/images/avatar', request.file.filename))
+                    response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว3'})
+                }catch{
+                    response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว4'})
+                }
+            }
+        }
+    })
 }

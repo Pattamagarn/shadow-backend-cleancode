@@ -159,7 +159,7 @@ module.exports.updateAuctionProduct = (request, response) => {
             if (error) {
                 response.status(200).json({ status: false, payload: '' })
             } else {
-                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+                response.status(200).json({ status: true, payload: 'เสร็จสิ้น' })
             }
         })
 }
@@ -173,7 +173,7 @@ module.exports.updateBid = (request, response) => {
             if (error) {
                 response.status(200).json({ status: false, payload: '' })
             } else {
-                response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
+                response.status(200).json({ status: true, payload: 'เสร็จสิ้น' })
             }
         })
 }
