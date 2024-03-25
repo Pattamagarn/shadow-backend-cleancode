@@ -5,5 +5,4 @@ const { createHistoryProduct,readHistoryProduct } = require('../controllers/hist
 router.post('/create-history-product', createHistoryProduct)
 router.get('/read-history-product', readHistoryProduct)
 
-
 module.exports = router

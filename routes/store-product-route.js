@@ -5,5 +5,4 @@ const { createStoreProduct,readStoreProduct } = require('../controllers/store-pr
 router.post('/create-store-product', createStoreProduct)
 router.get('/read-store-product', readStoreProduct)
 
-
 module.exports = router
