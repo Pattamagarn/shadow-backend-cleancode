@@ -36,6 +36,10 @@ exports.updateGachaProduct = (request, response) => {
     gachaProductModel.updateGachaProduct(request, response)
 }
 
+exports.updateGuaranteeStatus = (request, response) => {
+    gachaProductModel.updateGuaranteeStatus(request, response)
+}
+
 exports.deleteGachaProduct = (request, response) => {
     gachaProductModel.deleteGachaProduct(request, response)
 }

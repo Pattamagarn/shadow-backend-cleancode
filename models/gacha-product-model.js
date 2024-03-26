@@ -159,6 +159,31 @@ module.exports.updateGachaProduct = (request, response) => {
     })
 }
 
+module.exports.updateGuaranteeStatus = (request, response) => {
+    const requestUUID = request.params.uuid;
+    const requestStatus = request.body.guarantee_status;
+    if (requestStatus === 0) {
+        connection.query('UPDATE gacha_product SET guarantee_status = 1, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'เปิดสถานะการการันตีาสำเร็จ' });
+                }
+            });
+    } else if (requestStatus === 1) {
+        connection.query('UPDATE gacha_product SET guarantee_status = 0, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'ปิดสถานะการการันตีสำเร็จ' });
+                }
+            });
+    }
+}
+
 module.exports.deleteGachaProduct = (request, response) => {
     const requestUUID = request.params.uuid
     connection.query('SELECT information FROM gacha_product WHERE uuid = ?', [requestUUID], (error, result) => {

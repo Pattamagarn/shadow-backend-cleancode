@@ -11,7 +11,7 @@ module.exports.createStoreProduct = (request, response) => {
         response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
     }
     else {
-        const requesUUID = request.body.uuid
+        const requesUUID = uuid.v4()
         const requesEmail = request.body.email
         const requestGameName = request.body.game_name
         const requestProductName = request.body.product_name
