@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2024 at 12:21 AM
+-- Generation Time: Mar 25, 2024 at 07:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -37,13 +37,6 @@ CREATE TABLE `account` (
   `create_at` datetime NOT NULL DEFAULT current_timestamp(),
   `update_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=tis620 COLLATE=tis620_thai_ci;
-
---
--- Dumping data for table `account`
---
-
-INSERT INTO `account` (`email`, `username`, `avatar`, `suspended_status`, `role`, `gacha_count`, `create_at`, `update_at`) VALUES
-('foxteary@gmail.com', 'Nutsang', 'n.png', 0, 0, 0, '2024-02-26 04:17:57', '2024-02-26 04:17:57');
 
 -- --------------------------------------------------------
 
@@ -95,13 +88,6 @@ CREATE TABLE `finance` (
   `update_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=tis620 COLLATE=tis620_thai_ci;
 
---
--- Dumping data for table `finance`
---
-
-INSERT INTO `finance` (`email`, `cash_amount`, `aysel_amount`, `create_at`, `update_at`) VALUES
-('foxteary@gmail.com', 0, 0, '2024-02-26 04:17:57', '2024-02-26 04:17:57');
-
 -- --------------------------------------------------------
 
 --
@@ -113,7 +99,6 @@ CREATE TABLE `gacha_product` (
   `product_id` varchar(3072) NOT NULL,
   `game_name` longtext NOT NULL,
   `name` longtext NOT NULL,
-  `price` double NOT NULL,
   `chance` double NOT NULL,
   `guarantee_status` tinyint(1) NOT NULL,
   `information` longtext NOT NULL,
@@ -133,6 +118,20 @@ CREATE TABLE `game_name` (
   `game_name` longtext NOT NULL,
   `create_at` datetime NOT NULL DEFAULT current_timestamp(),
   `update_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=tis620 COLLATE=tis620_thai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `game_product`
+--
+
+CREATE TABLE `game_product` (
+  `uuid` varchar(3072) NOT NULL,
+  `product_id` varchar(3072) NOT NULL,
+  `game_name` longtext NOT NULL,
+  `name` longtext DEFAULT NULL,
+  `description` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=tis620 COLLATE=tis620_thai_ci;
 
 -- --------------------------------------------------------
@@ -266,6 +265,12 @@ ALTER TABLE `gacha_product`
 ALTER TABLE `game_name`
   ADD PRIMARY KEY (`uuid`),
   ADD UNIQUE KEY `game_name` (`game_name`) USING HASH;
+
+--
+-- Indexes for table `game_product`
+--
+ALTER TABLE `game_product`
+  ADD PRIMARY KEY (`uuid`);
 
 --
 -- Indexes for table `general_product`
