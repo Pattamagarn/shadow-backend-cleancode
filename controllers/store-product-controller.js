@@ -7,3 +7,7 @@ exports.createStoreProduct = (request, response) => {
 exports.readStoreProduct = (request, response) => {
     storeProductModel.readStoreProduct(request, response)
 }
+
+exports.readLastedStoreProduct = (request, response) => {
+    storeProductModel.readLastedStoreProduct(request, response)
+}
