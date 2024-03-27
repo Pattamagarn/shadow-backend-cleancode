@@ -23,6 +23,7 @@ const finance = require('./routes/finance-route')
 const historyProduct = require('./routes/history-product-route')
 const storeProduct = require('./routes/store-product-route')
 const logRedeemCode = require('./routes/log-redeem-code-route')
+const otp = require('./routes/otp-route')
 
 app.use(cookieParser())
 app.use(express.json())
@@ -48,6 +49,7 @@ app.use('/api', finance)
 app.use('/api', historyProduct)
 app.use('/api', storeProduct)
 app.use('/api', logRedeemCode)
+app.use('/api', otp)
 
 const port = process.env.PORT || 8000
 const server = app.listen(port, () => {
