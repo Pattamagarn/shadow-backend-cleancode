@@ -11,3 +11,11 @@ exports.paymentMethodUpdateImage = (request, response) => {
 exports.paymentMethodUpdateVideo = (request, response) => {
     paymentMethodModel.paymentMethodUpdateVideo(request, response)
 }
+
+exports.deletePaymentMethodImage = (request, response) => {
+    paymentMethodModel.deletePaymentMethodImage(request, response)
+}
+
+exports.deletePaymentMethodVideo = (request, response) => {
+    paymentMethodModel.deletePaymentMethodVideo(request, response)
+}
