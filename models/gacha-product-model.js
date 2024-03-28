@@ -168,7 +168,7 @@ module.exports.updateGuaranteeStatus = (request, response) => {
                 if (error) {
                     response.status(200).json({ status: false, payload: '' });
                 } else {
-                    response.status(200).json({ status: true, payload: 'เปิดสถานะการการันตีาสำเร็จ' });
+                    response.status(200).json({ status: true, payload: 'เปิดสถานะการการันตีสำเร็จ' });
                 }
             });
     } else if (requestStatus === 1) {
