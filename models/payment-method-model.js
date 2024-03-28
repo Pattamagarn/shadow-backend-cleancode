@@ -85,3 +85,39 @@ module.exports.paymentMethodUpdateVideo = (request, response) => {
         }
     })
 }
+
+module.exports.deletePaymentMethodImage = (request, response) => {
+    const requestUUID = request.params.uuid
+    connection.query('SELECT information FROM payment_method WHERE uuid = ?', [requestUUID], (error, result) => {
+        if(error){
+            response.status(200).json({status: false, payload: 'ลบ Payment Method Image ล้มเหลว'})
+        }else{
+            const information = result[0].information
+            connection.query("UPDATE payment_method SET information = '' WHERE uuid = ?", [requestUUID], (error, result) => {
+                if(error){
+                    response.status(200).json({status: false, payload: 'ลบ Payment Method Image ล้มเหลว'})
+                }else{
+                    fs.unlinkSync(path.join('./public/images/payment_method', information))
+                    response.status(200).json({status: true, payload: 'ลบ Payment Method Image สำเร็จ'})
+                }
+            })
+        }
+    })
+}
+
+module.exports.deletePaymentMethodVideo = (request, response) => {
+    const requestUUID = request.params.uuid
+    connection.query('SELECT information FROM payment_method WHERE uuid = ?', [requestUUID], (error, result) => {
+        if(error){
+            response.status(200).json({status: false, payload: 'ลบ Payment Method video ล้มเหลว'})
+        }else{
+            connection.query("UPDATE payment_method SET information = '' WHERE uuid = ?", [requestUUID], (error, result) => {
+                if(error){
+                    response.status(200).json({status: false, payload: 'ลบ Payment Method video ล้มเหลว'})
+                }else{
+                    response.status(200).json({status: true, payload: 'ลบ Payment Method video สำเร็จ'})
+                }
+            })
+        }
+    })
+}

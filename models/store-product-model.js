@@ -50,3 +50,25 @@ module.exports.readStoreProduct = (request, response) => {
         }
     }
 }
+
+module.exports.readLastedStoreProduct = (request, response) => {
+    if (!isConnected) {
+        response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+    } else {
+        try {
+            const token = request.cookies.token
+            const decoded = jsonwebtoken.verify(token, SECRET)
+            const requestEmail = decoded.email
+            console.log(requestEmail)
+            connection.query('SELECT * FROM store_product WHERE email = ? ORDER BY update_at DESC LIMIT 1', [requestEmail], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+                } else {
+                    response.status(200).json({ status: true, payload: result })
+                }
+            })
+        } catch {
+            response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+        }
+    }
+}
