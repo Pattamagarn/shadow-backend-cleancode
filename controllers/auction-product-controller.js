@@ -40,6 +40,10 @@ exports.updateBid = (request, response) => {
     auctionProductModel.updateBid(request, response)
 }
 
+exports.updateAuctionStatus = (request, response) => {
+    auctionProductModel.updateAuctionStatus(request, response)
+}
+
 exports.deleteAuctionProduct = (request, response) => {
     auctionProductModel.deleteAuctionProduct(request, response)
 }

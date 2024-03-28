@@ -178,6 +178,31 @@ module.exports.updateBid = (request, response) => {
         })
 }
 
+module.exports.updateAuctionStatus = (request, response) => {
+    const requestUUID = request.params.uuid;
+    const requestStatus = request.body.auction_status;
+    if (requestStatus === 0) {
+        connection.query('UPDATE auction_product SET auction_status = 1, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'เปิดสถานะการประมูลสำเร็จ' });
+                }
+            });
+    } else if (requestStatus === 1) {
+        connection.query('UPDATE auction_product SET auction_status = 0, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'ปิดสถานะการประมูลาสำเร็จ' });
+                }
+            });
+    }
+}
+
 module.exports.deleteAuctionProduct = (request, response) => {
     const requestUUID = request.params.uuid
     connection.query('SELECT information FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {

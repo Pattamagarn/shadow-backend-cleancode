@@ -44,19 +44,19 @@ module.exports.paymentMethodSelect = (request, response) => {
 module.exports.paymentMethodUpdateImage = (request, response) => {
     upload.single('file')(request, response, (error) => {
         if(error){
-            response.status(200).json({status: false, payload: `${error} ใช้ได้แค่ไฟล์ .png เท่านั้น`})
+            response.status(200).json({status: false, payload: 'ใช้ได้แค่ไฟล์ .png เท่านั้น'})
         }else{
             try{
                 const token = request.cookies.token
                 jsonwebtoken.verify(token, SECRET)
                 const requestUUID = request.body.uuid
                 const requestInformation = request.file.filename
-                connection.query('SELECT uuid, method, information, create_at, update_at FROM payment_method WHERE uuid = ?', [requestUUID], (error, result) => {
+                connection.query('SELECT information FROM payment_method WHERE uuid = ?', [requestUUID], (error, result) => {
                     if(error){
                         response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
                     }else{
                         const information = result[0].information
-                        fs.unlinkSync(path.join('/public/images/payment-method', information))
+                        fs.unlinkSync(path.join('./public/images/payment-method', information))
                         connection.query('UPDATE payment_method SET information = ?, update_at = ? WHERE uuid = ?', [requestInformation, new Date(), requestUUID], (error, result) => {
                             if(error){
                                 response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
@@ -67,8 +67,12 @@ module.exports.paymentMethodUpdateImage = (request, response) => {
                     }
                 })
             }catch(error){
-                fs.unlinkSync(path.join('/public/images/payment-method', request.file.filename))
-                response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
+                try{
+                    fs.unlinkSync(path.join('./public/images/payment_method', request.file.filename))
+                    response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
+                }catch{
+                    response.status(200).json({status: false, payload: 'แก้ไขล้มเหลว'})
+                }
             }
         }
     })
