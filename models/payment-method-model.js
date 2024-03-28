@@ -44,7 +44,7 @@ module.exports.paymentMethodSelect = (request, response) => {
 module.exports.paymentMethodUpdateImage = (request, response) => {
     upload.single('file')(request, response, (error) => {
         if(error){
-            response.status(200).json({status: false, payload: 'ใช้ได้แค่ไฟล์ .png เท่านั้น'})
+            response.status(200).json({status: false, payload: `${error} ใช้ได้แค่ไฟล์ .png เท่านั้น`})
         }else{
             try{
                 const token = request.cookies.token
