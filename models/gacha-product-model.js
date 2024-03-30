@@ -80,6 +80,26 @@ module.exports.readGachaProduct = (request, response) => {
     })
 }
 
+module.exports.readGachaProductWithNormal = (request, response) => {
+    connection.query('SELECT * FROM gacha_product WHERE guarantee_status = 0', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
+module.exports.readGachaProductWithSpecial = (request, response) => {
+    connection.query('SELECT * FROM gacha_product WHERE guarantee_status = 1', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readGachaProductWithUUID = (request, response) => {
     const requestUUID = request.params.uuid 
     connection.query('SELECT * FROM gacha_product WHERE uuid = ?', [requestUUID], (error, result) => {

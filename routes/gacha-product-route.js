@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const { createGachaProduct, readGachaProduct, readGachaProductWithUUID, readGachaProductOldToNew, readGachaProductNewToOld, readGachaProductCheapToExpensive,
-        readGachaProductExpensiveToCheap, readGacha3Product, updateGachaProduct, updateGuaranteeStatus, deleteGachaProduct
+        readGachaProductExpensiveToCheap, readGacha3Product, updateGachaProduct, updateGuaranteeStatus, deleteGachaProduct, readGachaProductWithNormal, readGachaProductWithSpecial
         } = require('../controllers/gacha-product-controller')
 
 router.post('/create-gacha-product', createGachaProduct)
 router.get('/read-gacha-product', readGachaProduct)
+router.get('/read-gacha-product-normal', readGachaProductWithNormal)
+router.get('/read-gacha-product-special', readGachaProductWithSpecial)
 router.get('/read-gacha-product-uuid/:uuid', readGachaProductWithUUID)
 router.get('/read-gacha-product-old-to-new', readGachaProductOldToNew)
 router.get('/read-gacha-product-new-to-old', readGachaProductNewToOld)

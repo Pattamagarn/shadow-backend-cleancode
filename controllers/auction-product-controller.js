@@ -8,6 +8,10 @@ exports.readAuctionProduct = (request, response) => {
     auctionProductModel.readAuctionProduct(request, response)
 }
 
+exports.readAuctionProductAll = (request, response) => {
+    auctionProductModel.readAuctionProductAll(request, response)
+}
+
 exports.readAuctionProductWithUUID = (request, response) => {
     auctionProductModel.readAuctionProductWithUUID(request, response)
 }
@@ -38,6 +42,10 @@ exports.updateAuctionProduct = (request, response) => {
 
 exports.updateBid = (request, response) => {
     auctionProductModel.updateBid(request, response)
+}
+
+exports.updateAuctionStatus = (request, response) => {
+    auctionProductModel.updateAuctionStatus(request, response)
 }
 
 exports.deleteAuctionProduct = (request, response) => {

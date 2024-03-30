@@ -20,7 +20,7 @@ module.exports.createHistoryProduct = (request, response) => {
         connection.query('INSERT INTO history_product (uuid, email, game_name, product_name, product_price, buy_method, create_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [requesUUID, requesEmail, requestGameName, requestProductName, requestProductPrice, requestBuyMethod, new Date()], (error, result) => {
                 if (error) {
-                    response.status(200).json({ status: false, payload: '' })
+                    response.status(200).json({ status: false, payload: error })
                 } else {
                     response.status(200).json({ status: true, payload: 'ทำประวัติธุรกรรมเรียบร้อย' })
                 }

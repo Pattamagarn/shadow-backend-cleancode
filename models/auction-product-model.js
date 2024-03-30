@@ -83,6 +83,16 @@ module.exports.readAuctionProduct = (request, response) => {
     })
 }
 
+module.exports.readAuctionProductAll = (request, response) => {
+    connection.query('SELECT * FROM auction_product WHERE auction_status = 1', [], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: [] })
+        } else {
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readAuctionProductWithUUID = (request, response) => {
     const requestUUID = request.params.uuid 
     connection.query('SELECT * FROM auction_product WHERE uuid = ?', [requestUUID], (error, result) => {
@@ -135,7 +145,7 @@ module.exports.readAuctionProductExpensiveToCheap = (request, response) => {
 }
 
 module.exports.readAuction3Product = (request, response) => {
-    connection.query('SELECT * FROM auction_product LIMIT 3', [], (error, result) => {
+    connection.query('SELECT * FROM auction_product WHERE auction_status = 1 LIMIT 3', [], (error, result) => {
         if (error) {
             response.status(200).json({ status: false, payload: [] })
         } else {
@@ -176,6 +186,31 @@ module.exports.updateBid = (request, response) => {
                 response.status(200).json({ status: true, payload: 'เสร็จสิ้น' })
             }
         })
+}
+
+module.exports.updateAuctionStatus = (request, response) => {
+    const requestUUID = request.params.uuid;
+    const requestStatus = request.body.auction_status;
+    if (requestStatus === 0) {
+        connection.query('UPDATE auction_product SET auction_status = 1, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'เปิดสถานะการประมูลสำเร็จ' });
+                }
+            });
+    } else if (requestStatus === 1) {
+        connection.query('UPDATE auction_product SET auction_status = 0, update_at = ? WHERE uuid = ? LIMIT 1',
+            [new Date(), requestUUID], (error, result) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ status: false, payload: '' });
+                } else {
+                    response.status(200).json({ status: true, payload: 'ปิดสถานะการประมูลาสำเร็จ' });
+                }
+            });
+    }
 }
 
 module.exports.deleteAuctionProduct = (request, response) => {
