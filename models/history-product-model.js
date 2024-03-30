@@ -50,3 +50,39 @@ module.exports.readHistoryProduct = (request, response) => {
         }
     }
 }
+
+module.exports.readSumAysel = (request, response) => {
+    if (!isConnected) {
+        response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+    } else {
+        try {
+            connection.query('SELECT SUM(product_price) AS sumAysel FROM history_product', [], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: [] })
+                } else {
+                    response.status(200).json({ status: true, payload: result })
+                }
+            })
+        } catch {
+            response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+        }
+    }
+}
+
+module.exports.readSumBuyItems = (request, response) => {
+    if (!isConnected) {
+        response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+    } else {
+        try {
+            connection.query('SELECT COUNT(uuid) AS sumBuyItem FROM history_product', [], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: [] })
+                } else {
+                    response.status(200).json({ status: true, payload: result })
+                }
+            })
+        } catch {
+            response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+        }
+    }
+}
