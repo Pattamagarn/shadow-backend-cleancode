@@ -254,3 +254,16 @@ module.exports.updateAvatar = (request, response) => {
         }
     })
 }
+
+module.exports.updateGachaCount = (request, response) => {
+    const requestEmail = request.params.email
+    const requestGachaCount = request.body.gacha_count
+    connection.query('UPDATE account SET gacha_count = ?, update_at = ? WHERE email = ?',
+        [requestGachaCount, new Date(), requestEmail], (error, result) => {
+            if (error) {
+                response.status(200).json({ status: false, payload: error })
+            } else {
+                response.status(200).json({ status: true, payload: 'แก้ไขชื่อสำเร็จ' })
+            }
+        })
+}

@@ -35,3 +35,7 @@ exports.updateUsername = (request, response) => {
 exports.updateAvatar = (request, response) => {
     accountModel.updateAvatar(request, response)
 }
+
+exports.updateGachaCount = (request, response) => {
+    accountModel.updateGachaCount(request, response)
+}
