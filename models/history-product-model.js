@@ -56,7 +56,7 @@ module.exports.readSumAysel = (request, response) => {
         response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
     } else {
         try {
-            connection.query('SELECT SUM(product_price) AS sumAysel FROM history_product', [], (error, result) => {
+            connection.query('SELECT SUM(product_price) AS sum_aysel FROM history_product', [], (error, result) => {
                 if (error) {
                     response.status(200).json({ status: false, payload: [] })
                 } else {
@@ -76,7 +76,7 @@ module.exports.readSumBuyItems = (request, response) => {
         try {
             connection.query('SELECT COUNT(uuid) AS sumBuyItem FROM history_product', [], (error, result) => {
                 if (error) {
-                    response.status(200).json({ status: false, payload: [] })
+                    response.status(200).json({ status: false, payload: error})
                 } else {
                     response.status(200).json({ status: true, payload: result })
                 }
