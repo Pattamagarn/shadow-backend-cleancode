@@ -62,7 +62,7 @@ module.exports.createGachaProduct = (request, response) => {
                         fs.unlinkSync(path.join('./public/images/gacha-product', request.file.filename))
                         response.status(200).json({status: false, payload: 'เพิ่มสินค้ากาชาล้มเหลว'})
                     } catch (error) {
-                        response.status(200).json({status: false, payload: 'เพิ่มสินค้ากาชาล้มเหลว'})
+                        response.status(200).json({status: false, payload: 'กรุณาใส่รูปภาพ'})
                     }
                 }
             }

@@ -5,6 +5,7 @@ const multer = require('multer')
 const uuid = require('uuid')
 const path = require('path')
 const fs = require('fs')
+const { error } = require('console')
 const storageAuctionProduct = multer.diskStorage({
     destination: (request, file, callback) => {
         callback(null, './public/images/auction-product')
@@ -33,7 +34,7 @@ const upload = multer({
 
 module.exports.createAuctionProduct = (request, response) => {
     if (!isConnected) {
-        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว1' })
+        response.status(200).json({ status: false, payload: error })
     } else {
         upload.single('file')(request, response, (error) => {
             if (error) {
@@ -54,8 +55,7 @@ module.exports.createAuctionProduct = (request, response) => {
                         [requestUUID, requestProductId, requestGameName, requestName, requestDefaultPrice, requestDefaultBid, false, requestStartTime, requestEndTime, requestInformation, requestDescription, 'ไร้นาม', new Date(), new Date()], (error, result) => {
                             if (error) {
                                 fs.unlinkSync(path.join('./public/images/auction-product', request.file.filename))
-                                console.log(error)
-                                response.status(200).json({ status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว2' })
+                                response.status(200).json({ status: false, payload: `เพิ่มสินค้าประมูลล้มเหลว` })
                             } else {
                                 response.status(200).json({ status: true, payload: 'เพิ่มสินค้าประมูลสำเร็จ' })
                             }
@@ -63,9 +63,9 @@ module.exports.createAuctionProduct = (request, response) => {
                 } catch (error) {
                     try {
                         fs.unlinkSync(path.join('./public/images/auction-product', request.file.filename))
-                        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว3' })
+                        response.status(200).json({ status: false, payload: `เพิ่มสินค้าประมูลล้มเหลว` })
                     } catch (error) {
-                        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าประมูลล้มเหลว4' })
+                        response.status(200).json({ status: false, payload: `กรุณาใส่รูปภาพ` })
                     }
                 }
             }

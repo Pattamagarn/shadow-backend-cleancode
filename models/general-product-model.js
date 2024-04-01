@@ -63,7 +63,7 @@ module.exports.createGeneralProduct = (request, response) => {
                         fs.unlinkSync(path.join('./public/images/general-product', request.file.filename))
                         response.status(200).json({ status: false, payload: 'เพิ่มสินค้าล้มเหลว' })
                     } catch (error) {
-                        response.status(200).json({ status: false, payload: 'เพิ่มสินค้าล้มเหลว' })
+                        response.status(200).json({ status: false, payload: 'กรุณาใส่รูปภาพ' })
                     }
                 }
             }
