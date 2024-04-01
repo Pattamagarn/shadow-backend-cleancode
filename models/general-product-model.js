@@ -153,7 +153,7 @@ module.exports.updateGeneralProduct = (request, response) => {
     connection.query('UPDATE general_product SET name = ? , game_name = ? , normal_price = ? , special_price = ? , information = ? , description = ? , update_at = ? WHERE uuid = ? LIMIT 1',
         [requestName, requestGameName, requestNormalPrice, requestSpecialPrice, requestInformation, requestDescription, new Date(), requestUUID], (error, result) => {
             if (error) {
-                response.status(200).json({ status: false, payload: '' })
+                response.status(200).json({ status: false, payload: ''})
             } else {
                 response.status(200).json({ status: true, payload: 'แก้ไขสำเร็จ' })
             }
