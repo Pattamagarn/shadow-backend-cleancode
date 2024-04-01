@@ -28,7 +28,7 @@ module.exports.readSumCash = (request, response) => {
         response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
     } else {
         try {
-            connection.query('SELECT SUM(cash_amount) AS sumCash FROM history_payment', [], (error, result) => {
+            connection.query('SELECT SUM(cash_amount) AS sum_cash FROM history_payment', [], (error, result) => {
                 if (error) {
                     response.status(200).json({ status: false, payload: [] })
                 } else {

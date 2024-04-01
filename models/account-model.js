@@ -246,8 +246,8 @@ module.exports.updateAvatar = (request, response) => {
                     if(error){
                         response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว1'})
                     }else{
-                        const avatar = result[0].avatar
-                        fs.unlinkSync(path.join('./public/images/avatar', avatar))
+                        // const avatar = result[0].avatar
+                        // fs.unlinkSync(path.join('./public/images/avatar', avatar))
                         connection.query('UPDATE account SET avatar = ?, update_at = ? WHERE email = ?', [requestAvatar, new Date(), requestEmail], (error, result) => {
                             if(error){
                                 response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว2'})
@@ -258,9 +258,9 @@ module.exports.updateAvatar = (request, response) => {
                     }
                 })
             }catch(error){
-                console.log(error)
+                // console.log(error)
                 try{
-                    fs.unlinkSync(path.join('./public/images/avatar', request.file.filename))
+                    // fs.unlinkSync(path.join('./public/images/avatar', request.file.filename))
                     response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว3'})
                 }catch{
                     response.status(200).json({status: false, payload: 'การแก้ไขรูปโปรไฟล์ล้มเหลว4'})
