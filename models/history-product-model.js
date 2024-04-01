@@ -92,7 +92,7 @@ module.exports.readTop10 = (request, response) => {
         response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
     } else {
         try {
-            connection.query('SELECT game_name, product_name, COUNT(*) AS count FROM history_product WHERE buy_method != "สินค้ากาชา" GROUP BY product_name ORDER BY count DESC LIMIT 10', [], (error, result) => {
+            connection.query('SELECT game_name, product_name, COUNT(*) AS count FROM history_product WHERE buy_method != "สินค้ากาชา" and buy_method != "สินค้าประมูล" GROUP BY product_name ORDER BY count DESC LIMIT 10', [], (error, result) => {
                 if (error) {
                     response.status(200).json({ status: false, payload: [] })
                 } else {

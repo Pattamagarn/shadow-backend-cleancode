@@ -92,6 +92,18 @@ module.exports.readGeneralProductWithUUID = (request, response) => {
     })
 }
 
+module.exports.readGeneralProductWithName = (request, response) => {
+    const requestName = request.params.name
+    connection.query('SELECT * FROM general_product WHERE name = ?', [requestName], (error, result) => {
+        if (error) {
+            response.status(200).json({ status: false, payload: []})
+        } else {
+            console.log(result)
+            response.status(200).json({ status: true, payload: result })
+        }
+    })
+}
+
 module.exports.readGeneralProductOldToNew = (request, response) => {
     connection.query('SELECT * FROM general_product ORDER BY update_at', [], (error, result) => {
         if (error) {
