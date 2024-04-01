@@ -11,7 +11,7 @@ module.exports.createHistoryProduct = (request, response) => {
         response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
     }
     else {
-        const requesUUID = request.body.uuid
+        const requesUUID = uuid.v4()
         const requesEmail = request.body.email
         const requestGameName = request.body.game_name
         const requestProductName = request.body.product_name
@@ -75,6 +75,24 @@ module.exports.readSumBuyItems = (request, response) => {
     } else {
         try {
             connection.query('SELECT COUNT(uuid) AS sumBuyItem FROM history_product', [], (error, result) => {
+                if (error) {
+                    response.status(200).json({ status: false, payload: [] })
+                } else {
+                    response.status(200).json({ status: true, payload: result })
+                }
+            })
+        } catch {
+            response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+        }
+    }
+}
+
+module.exports.readTop10 = (request, response) => {
+    if (!isConnected) {
+        response.status(200).json({ status: false, payload: 'ดึงข้อมูลล้มเหลว' })
+    } else {
+        try {
+            connection.query('SELECT game_name, product_name, COUNT(*) AS count FROM history_product WHERE buy_method != "สินค้ากาชา" GROUP BY product_name ORDER BY count DESC LIMIT 10', [], (error, result) => {
                 if (error) {
                     response.status(200).json({ status: false, payload: [] })
                 } else {

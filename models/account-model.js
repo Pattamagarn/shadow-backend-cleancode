@@ -179,6 +179,21 @@ module.exports.selectAccount = (request, response) => {
     }
 }
 
+module.exports.readUsernameByEmail = (request, response) => {
+    if(!isConnected){
+        response.status(200).json({status: false, payload: 'การแสดงข้อมูลล้มเหลว'})
+    }else{
+        const requestEmail = request.params.email 
+        connection.query('SELECT username FROM account WHERE email = ?', [requestEmail], (error, result) => {
+            if(error){
+                response.status(200).json({status: false, payload: 'การแสดงข้อมูลล้มเหลว'})
+            }else{ 
+                response.status(200).json({status: true, payload: result})
+            }
+        })
+    }
+}
+
 module.exports.updateStatusAccount = (request, response) => {
     const requestEmail = request.params.email;
     const requestStatus = request.body.suspended_status;
